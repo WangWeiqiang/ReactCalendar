@@ -1,0 +1,30 @@
+.box-week{
+    margin-top: 15px;
+}
+.box-week h1{
+    font-size:1.3em;
+    text-align: center;
+    margin-top: 15px;
+}
+.tb-week{
+    width: 100%;
+}
+.tb-week thead{
+    background-color: #eee;
+}
+.tb-week thead th,.tb-week tr td{
+    text-align: center;
+}
+td.week-end{
+    color:#00f;
+}
+.today{
+    background-color:#900;
+    color:#fff;
+}
+.publicholiday{
+    background-color: aquamarine;
+}
+.birthday{
+    background-color: chocolate;
+}
