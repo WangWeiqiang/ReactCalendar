@@ -9,7 +9,7 @@
 
 
 const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"]
-const weekNames =["Su","M","Tu","W","Th","F","Sa"]
+
 const publicHolidays ={
   '2019-1-2':'Chinese New Year',
   '2019-2-23':'Good Friday',
@@ -94,7 +94,6 @@ const myDates = monthNames.map(m => {
 function CreateMonthTable(month){
   const monthIndex = monthNames.indexOf(month)
   const days = myDates[monthIndex].days
-  console.log(days)
   return (
     <Month month={month} monthDays={days}/>
     
