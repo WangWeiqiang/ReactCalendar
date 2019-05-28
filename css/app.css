@@ -14,6 +14,10 @@
 }
 .tb-week thead th,.tb-week tr td{
     text-align: center;
+    cursor: pointer;
+}
+.tb-week tr td{
+    border: solid 4px #fff;
 }
 td.week-end{
     color:#00f;

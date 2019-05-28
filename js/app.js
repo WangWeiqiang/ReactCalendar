@@ -96,44 +96,8 @@ function CreateMonthTable(month){
   const days = myDates[monthIndex].days
   console.log(days)
   return (
-    <div className='box-week col-md-4 col-sm-6' key={month}>
-      <h1>{month}</h1>
-      <table className='tb-week'>
-        <thead>
-          <tr>
-            <th>{weekNames[0]}</th>
-            <th>{weekNames[1]}</th>
-            <th>{weekNames[2]}</th>
-            <th>{weekNames[3]}</th>
-            <th>{weekNames[4]}</th>
-            <th>{weekNames[5]}</th>
-            <th>{weekNames[6]}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            days.map((day,index)=>(
-              <tr key={index}>
-                {
-                  day.map((d,i)=>(                    
-                    <td className={(i==0 ||i==6)?"week-end":""} 
-                        className={
-                          ((d!=null && today.getDate() === d.date.getDate() && today.getMonth() === d.date.getMonth() && today.getFullYear() === d.date.getFullYear())?"today":"") +" " 
-                          +((d!=null && publicHolidays[d.date.getFullYear()+'-'+(d.date.getMonth()+1)+'-'+d.date.getDate()]!=undefined)? "publicholiday":"") +" "
-                          +((d!=null && birthDays[d.date.getFullYear()+'-'+(d.date.getMonth()+1)+'-'+d.date.getDate()]!=undefined)? "birthday":"") 
-                        }
-                        key={index+'-'+i}>
-                     {d!=null? d.date.getDate():''}
-                     </td>
-                  ))
-                            
-                }
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
+    <Month month={month} monthDays={days}/>
+    
   )
 }
 
