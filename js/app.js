@@ -6,9 +6,8 @@
 //     )
 //   }
 // }
-
-
 const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"]
+const weekNames =["Su","M","Tu","W","Th","F","Sa"]
 
 const publicHolidays ={
   '2019-1-2':'Chinese New Year',
@@ -23,6 +22,12 @@ const birthDays ={
 const anniversary={
   '2019-7-2':'Wedding'
 }
+
+const busyDays=[
+  '2019-6-25',
+  '2019-10-11'
+]
+
 
 const today=new Date()
 
@@ -48,59 +53,9 @@ const dates =[
   }
 ]
 
-function listToMatrix(list, elementsPerSubArray) {
-  var matrix = [], i, k;
-
-  for (i = 0, k = -1; i < list.length; i++) {
-      if (i % elementsPerSubArray === 0) {
-          k++;
-          matrix[k] = [];
-      }
-
-      matrix[k].push(list[i]);
-  }
-
-  return matrix;
-}
-
-const date = new Date()
-const myDates = monthNames.map(m => {
-  const firstDay = new Date(date.getFullYear(), monthNames.indexOf(m), 1);
-  const lastDay = new Date(date.getFullYear(), monthNames.indexOf(m) + 1, 0);
-  var days=[]
-  const weekDayOfFirstDay = firstDay.getDay()
-  const weekDayOfLastDay = lastDay.getDay()
-  for(var i=0;i<weekDayOfFirstDay;i++){
-    days.push(null)
-  }
-  for(var i=1;i<=lastDay.getDate();i++){
-    days.push({
-      date:new Date(date.getFullYear(),monthNames.indexOf(m),i)
-    })
-  }
-  for(var i=weekDayOfLastDay;i<6;i++){
-    days.push(null)
-  }
-
-  var weekGroupDays=listToMatrix(days,7)
-
-  return {
-    month:m,
-    days:weekGroupDays
-  }
-})
-
-
-function CreateMonthTable(month){
-  const monthIndex = monthNames.indexOf(month)
-  const days = myDates[monthIndex].days
-  return (
-    <Month month={month} monthDays={days}/>
-    
-  )
-}
-
-
-const element = monthNames.map(m => (CreateMonthTable(m)))
   
-ReactDOM.render(element,rootElement)
+ReactDOM.render(
+  <Calendar monthNames={monthNames} weekNames={weekNames} 
+    publicHolidays={publicHolidays} birthDays={birthDays} 
+    busyDays={busyDays} anniversaries = {anniversary}/>,
+  rootElement)

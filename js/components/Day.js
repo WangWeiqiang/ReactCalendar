@@ -1,5 +1,5 @@
 class Day extends React.Component{
-    getClassName(day, weekDayIndex, publicHolidays, birthDays, busy){
+    getClassName(day, weekDayIndex){
         var today=new Date()
         var classNames=[]
         if(weekDayIndex==0 || weekDayIndex==6){
@@ -8,13 +8,13 @@ class Day extends React.Component{
         if(day!=null && today.getDate() === day.date.getDate() && today.getMonth() === day.date.getMonth() && today.getFullYear() === day.date.getFullYear()){
             classNames.push("today")
         }
-        if(day!=null && publicHolidays[day.date.getFullYear()+'-'+(day.date.getMonth()+1)+'-'+day.date.getDate()]!=undefined){
+        if(day!=null && day.publichHoliday!=null){
             classNames.push("publicholiday")
         }
-        if(day!=null && birthDays[day.date.getFullYear()+'-'+(day.date.getMonth()+1)+'-'+day.date.getDate()]!=undefined){
+        if(day!=null && day.birthDays!=null){
             classNames.push("birthday")
         }
-        if(busy){
+        if(day!=null && day.busy){
             classNames.push("busy")
         }
 
@@ -23,8 +23,7 @@ class Day extends React.Component{
     }
     render(){
         return (
-        <td className={this.getClassName(this.props.day, this.props.weekDayIndex, this.props.publicHolidays, this.props.birthDays, this.props.busy)}
-            key={this.props.weekDayIndex}>
+        <td className={this.getClassName(this.props.day, this.props.weekDayIndex)}>
                 {this.props.day!=null? this.props.day.date.getDate():''}
         </td>
         )
