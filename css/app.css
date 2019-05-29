@@ -23,12 +23,41 @@ td.week-end{
     color:#00f;
 }
 .today{
-    background-color:#900;
+    background-color:#ff3737;
     color:#fff;
 }
-.publicholiday{
-    background-color: aquamarine;
+
+td.count-4,td.count-3,td.count-2{
+    position: relative;
 }
-.birthday{
-    background-color: chocolate;
+td.count-4 i,td.count-3 i,td.count-3 i{
+    position: absolute;
+    font-size:0.7em;
+}
+td.count-4 i:first-child{
+    top:0;
+    left:0;
+}
+td.count-4 i:nth-child(2){
+    top:0;
+    right:0;
+}
+td.count-4 i:nth-child(3){
+    bottom:0;
+    left:0;
+}
+td.count-4 i:last-child{
+    bottom:0;
+    right:0;
+}
+ul.legend{
+    list-style: none;
+}
+ul.legend li{
+    display: inline-block;
+    font-size: 0.8em;
+    margin-right: 10px;
+}
+ul.legend li i{
+    margin-right: 3px;
 }

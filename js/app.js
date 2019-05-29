@@ -10,22 +10,33 @@ const monthNames = ["January", "February", "March", "April", "May", "June","July
 const weekNames =["Su","M","Tu","W","Th","F","Sa"]
 
 const publicHolidays ={
-  '2019-1-2':'Chinese New Year',
-  '2019-2-23':'Good Friday',
-  '2019-5-1':'Labour day'
+  '2019-1-1':'New Year\'s Day',
+  '2019-2-5':'Chinese New Year',
+  '2019-2-6':'Chinese New Year',
+  '2019-4-19':'Good Friday',
+  '2019-5-1':'Labour Day',
+  '2019-5-19':'Vesak Day',
+  '2019-6-5':'Hari Raya Puasa',
+  '2019-8-9':'National Day',
+  '2019-8-11':'Hari Raya Haji',
+  '2019-10-27':'Deepvali',
+  '2019-12-25':'Christmas Day'
 }
 
 const birthDays ={
-  '2019-5-2':'Kelvin'
+  '2019-5-1':['Kelvin','Lucy']
 }
 
 const anniversary={
-  '2019-7-2':'Wedding'
+  '2019-7-2':'Wedding',
+  '2019-5-1':'Starhub'
 }
 
 const busyDays=[
   '2019-6-25',
-  '2019-10-11'
+  '2019-10-11',
+  '2019-5-1'
+
 ]
 
 

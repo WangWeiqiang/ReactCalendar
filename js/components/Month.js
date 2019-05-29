@@ -9,7 +9,7 @@ class Month extends React.Component{
                     <tr>
                         {
                             this.props.weekNames.map((m)=>(
-                                <th>{m}</th>
+                                <th key={m}>{m}</th>
                             ))
                         }
                     </tr>

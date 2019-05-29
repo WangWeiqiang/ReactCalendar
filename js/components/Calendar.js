@@ -48,8 +48,8 @@ class Calendar extends React.Component{
             var weekGroupDays=this.listToMatrix(days,7)
         
             return {
-            month:m,
-            weeks:weekGroupDays
+                month:m,
+                weeks:weekGroupDays
             }
         })       
 
@@ -60,7 +60,7 @@ class Calendar extends React.Component{
         const months =  this.createMonths(this.props.monthNames)
 
         return (
-            <div className="row">
+
                  <div className="row" key='month-list'>
                     {
                         this.props.monthNames.map(m => (
@@ -68,7 +68,7 @@ class Calendar extends React.Component{
                         ))
                     }
                 </div>                
-            </div>
+
           )
     }
 }
