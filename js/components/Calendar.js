@@ -8,9 +8,7 @@ class Calendar extends React.Component{
     }
 
     shouldComponentUpdate(nextProps, nextState){
-        console.log(this.state.year)
-        console.log(nextState.year)
-        return this.state.year==nextState.year
+        return this.state.year!=nextState.year
     }
 
     listToMatrix(list, elementsPerSubArray) {
@@ -53,10 +51,14 @@ class Calendar extends React.Component{
                     anniversary:this.props.data.anniversary[dateString]
                 })
             }
-            for(var i=weekDayOfLastDay;i<6;i++){
+
+            var offDays = 42-days.length
+            for(var j=0;j<offDays;j++){                
                 days.push(null)
             }
-        
+
+            
+
             var weekGroupDays=this.listToMatrix(days,7)
         
             return {
@@ -90,12 +92,29 @@ class Calendar extends React.Component{
         }
 
         return (
-            <div>
+            <div>                
                 <div className="row">
-                    <ButtonChangeYear direction="left" onClick={this.changeYear}></ButtonChangeYear>
-                    <ButtonChangeYear direction="right" onClick={this.changeYear}></ButtonChangeYear>
+                    <div className="col-3 text-right">
+                        <ButtonChangeYear direction="left" onClick={this.changeYear}></ButtonChangeYear>
+                    </div>
+                    <div className="col-6 text-center">
+                        <div className="row">
+                        {
+                            [this.props.data.year-1,this.props.data.year,this.props.data.year+1].map((year)=>(
+                                <div className="text-center col-4" key={year}>
+                                    <span className={"p-1"+(year==this.props.data.year?" bg-warning font-weight-bold":"")}>{year}</span>
+                                </div>
+                            ))
+                            
+                        }
+                        </div>
+                    </div>
+                    <div className="col-3 text-left">
+                        <ButtonChangeYear direction="right" onClick={this.changeYear}></ButtonChangeYear>
+                    </div>
                 </div>
-                <div className="row">
+                <hr/>
+                <div className="row mt-3">
                     <div className="col-sm-5"><h4>Calendar for Year {this.props.data.year}</h4></div>
                     <div className='col-sm-7 text-right'>
                         <ul className="legend">

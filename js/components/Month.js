@@ -2,26 +2,28 @@ class Month extends React.Component{
     render(){
         
         return(            
-            <div className='box-week col-md-4 col-sm-6'>
-                <h1>{this.props.monthName}</h1>
-                <table className='tb-week'>
-                    <thead>
-                    <tr>
+            <div className='col-md-4 col-sm-6'>
+                <div className='week-box card'>
+                    <h1>{this.props.monthName}</h1>
+                    <table className='week-tb'>
+                        <thead>
+                        <tr>
+                            {
+                                this.props.weekNames.map((m)=>(
+                                    <th key={m}>{m}</th>
+                                ))
+                            }
+                        </tr>
+                        </thead>
+                        <tbody>
                         {
-                            this.props.weekNames.map((m)=>(
-                                <th key={m}>{m}</th>
+                            this.props.monthData.weeks.map((week,index)=>(
+                                <Week weekDays={week} weekIndex={index} month={this.props.month} key={index}/>                
                             ))
                         }
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        this.props.monthData.weeks.map((week,index)=>(
-                            <Week weekDays={week} weekIndex={index} month={this.props.month} key={index}/>                
-                        ))
-                    }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>            
         )
     }

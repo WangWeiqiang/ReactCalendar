@@ -1,4 +1,20 @@
 class Day extends React.Component{
+
+    constructor(props){
+        super(props)
+        this.state={
+            tooltip:false
+        }
+
+        this.Hover = this.Hover.bind(this)
+        this.Moveout=this.Moveout.bind(this)
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        return this.state.tooltip!=nextState.tooltip
+    }
+
+
     getClassNameAndIcon(day, weekDayIndex){
         var today=new Date()
         var classNames=[]
@@ -30,20 +46,34 @@ class Day extends React.Component{
 
     }
 
-    debug(){
-        console.log(this.props.day)
+    Hover(){
+        if(this.props.day && (this.props.day.publichHoliday || this.props.day.birthDays || this.props.day.busy || this.props.day.anniversary)){
+            this.setState({tooltip:true})
+        }
+    }
+
+    Moveout(){
+        this.setState({tooltip:false})
     }
 
     render(){
         const [className,icons]=this.getClassNameAndIcon(this.props.day, this.props.weekDayIndex)
         return (
-        <td className={className + ' '+(icons.length>1?'count-'+icons.length:'')}>
+        <td className={className + ' '+(icons.length>1?'count-'+icons.length:'')} onMouseOver={this.Hover} onMouseOut={this.Moveout}>
             {
                 icons.length>0? icons.map((icon)=>(
                     <i className={'fa fa-'+icon} key={icon}></i>
                 ))
                 :
-                <span>{this.props.day!=null? this.props.day.date.getDate():''}</span>
+                this.props.day!=null? this.props.day.date.getDate():'　'
+            }
+
+            {
+                this.state.tooltip?(<span className='tooltip'>{
+                    
+                }</span>)
+                :
+                ""
             }
                 
         </td>

@@ -1,24 +1,23 @@
-.box-week{
-    margin-top: 15px;
+.week-box{
+    margin: 15px 0;
+    
 }
-.box-week h1{
+.week-box h1{
     font-size:1.3em;
     text-align: center;
-    margin-top: 15px;
+    margin-top: 5px;
 }
-.tb-week{
+.week-tb{
     width: 100%;
 }
-.tb-week thead{
+.week-tb thead{
     background-color: #eee;
 }
-.tb-week thead th,.tb-week tr td{
+.week-tb thead th,.week-tb tr td{
     text-align: center;
     cursor: pointer;
 }
-.tb-week tr td{
-    border: solid 4px #fff;
-}
+
 td.week-end{
     color:#00f;
 }
