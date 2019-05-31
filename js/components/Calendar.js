@@ -27,8 +27,7 @@ class Calendar extends React.Component{
     }
 
     createMonths(year,monthNames){
-        
-        const today=new Date()
+        console.log(year)
         return monthNames.map(m => {
             const firstDay = new Date(year, monthNames.indexOf(m), 1);
             const lastDay = new Date(year, monthNames.indexOf(m) + 1, 0);
@@ -41,14 +40,15 @@ class Calendar extends React.Component{
 
             for(var i=1;i<=lastDay.getDate();i++){
                 var date=new Date(year,monthNames.indexOf(m),i)
-                var dateString = date.getFullYear()+'-'+ (date.getMonth()+1)+'-'+date.getDate()
+                var montDayString= (date.getMonth()+1)+'-'+date.getDate()
+                var fulldateString = date.getFullYear()+'-'+ montDayString
 
                 days.push({
                     date:new Date(year,monthNames.indexOf(m),i),
-                    publichHoliday:this.props.data.publicHolidays[dateString],
-                    birthDays:this.props.data.birthDays[dateString],
-                    busy:this.props.data.busyDays.indexOf(dateString)>=0,
-                    anniversary:this.props.data.anniversary[dateString]
+                    publichHoliday:this.props.data.publicHolidays[montDayString],
+                    birthDays:this.props.data.birthDays[montDayString],
+                    busy:this.props.data.busyDays.indexOf(fulldateString)>=0,
+                    anniversary:this.props.data.anniversary[montDayString]
                 })
             }
 
@@ -118,10 +118,10 @@ class Calendar extends React.Component{
                     <div className="col-sm-5"><h4>Calendar for Year {this.props.data.year}</h4></div>
                     <div className='col-sm-7 text-right'>
                         <ul className="legend">
-                            <li><i className='fa fa-umbrella-beach text-success'></i>Public Holiday</li>
-                            <li><i className='fa fa-birthday-cake text-danger'></i>Birthday</li>
-                            <li><i className='fa fa-flag text-info'></i>Anniversary</li>
-                            <li><i className='fa fa-running text-danger'></i>Busy</li>
+                            <li><i className='fa fa-umbrella-beach text-success'></i> Public Holiday</li>
+                            <li><i className='fa fa-birthday-cake text-danger'></i> Birthday</li>
+                            <li><i className='fa fa-flag text-info'></i> Anniversary</li>
+                            <li><i className='fa fa-running text-danger'></i> Busy</li>
                         </ul>
                     </div>
                 </div>
@@ -131,7 +131,9 @@ class Calendar extends React.Component{
                             <Month monthName={m} monthData={months[this.props.data.monthNames.indexOf(m)]} weekNames={this.props.data.weekNames} key={m}/>
                         ))
                     }
-                </div>                
+                </div>
+
+                
             </div>
 
           )

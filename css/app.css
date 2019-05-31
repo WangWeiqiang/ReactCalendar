@@ -16,6 +16,7 @@
 .week-tb thead th,.week-tb tr td{
     text-align: center;
     cursor: pointer;
+    height: 1.6em;
 }
 
 td.week-end{
@@ -54,9 +55,47 @@ ul.legend{
 }
 ul.legend li{
     display: inline-block;
-    font-size: 0.8em;
-    margin-right: 10px;
+    margin-left:15px;
+    font-size:0.8em;
 }
-ul.legend li i{
-    margin-right: 3px;
-}
+
+  .popover_content {
+    opacity: 0;
+    z-index: 999;
+    visibility: hidden;
+    position: absolute;
+    transform: translate(0, 10px);    
+    padding:0;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    width: auto;
+    text-align: left;
+    background-color: #eee;
+  }
+  .popover_content:before {
+    position: absolute;
+    z-index: -1;
+    content: "";  
+    top: -6px;
+    left:10px;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #eee transparent;
+    transition-duration: 0.3s;
+    transition-property: transform;
+  }
+  .popover_content span{
+    white-space:nowrap;
+    color:#333;
+  }
+  .popover_wrapper:hover .popover_content {
+    z-index: 10;
+    opacity: 1;
+    visibility: visible;
+    transform: translate(5, 0);
+    transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
+  }
+  .tooltip_text{
+      border-bottom:solid 1px #999;
+      padding:5px 10px;
+  }
