@@ -2,14 +2,7 @@ class Day extends React.Component{
 
     constructor(props){
         super(props)
-        
-        this.editCalendarEvent=this.editCalendarEvent.bind(this)
-    }
-
-    editCalendarEvent(){
-        if(this.props.day!=null){
-            $(".modal").modal()
-        }
+        this.lunchEventEditor=this.lunchEventEditor.bind(this)
     }
 
     shouldComponentUpdate(nextProps, nextState){
@@ -38,7 +31,7 @@ class Day extends React.Component{
         }
         if(day!=null && day.anniversary!=null){
             icons.push("flag text-info")
-            tooltips.push({type:"anniversary",title:day.anniversary,icon:'flag text-info'})
+            tooltips.push({type:"anniversary",title:day.anniversary.join(','),icon:'flag text-info'})
         }
         if(day!=null && day.busy){
             icons.push('running text-danger')
@@ -49,10 +42,17 @@ class Day extends React.Component{
 
     }
 
+    lunchEventEditor(){
+        if(this.props.day!=null){
+            window.SelectedDate=this.props.day
+            this.props.editCalendarEvent.call()
+        }
+    }
+
     render(){
         const [className,icons,tooltips]=this.getClassNameAndIcon(this.props.day, this.props.weekDayIndex)
         return (
-        <td className={className + ' '+(icons.length>0?'popover_wrapper count-'+icons.length:'')} onClick={this.editCalendarEvent}>
+        <td className={className + ' '+(icons.length>0?'popover_wrapper count-'+icons.length:'')} onClick={this.lunchEventEditor}>
             {
                 icons.length>0?(
                     <div>

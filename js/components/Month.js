@@ -18,7 +18,7 @@ class Month extends React.Component{
                         <tbody>
                         {
                             this.props.monthData.weeks.map((week,index)=>(
-                                <Week weekDays={week} weekIndex={index} month={this.props.month} key={index}/>                
+                                <Week weekDays={week} weekIndex={index} month={this.props.month} key={index} editCalendarEvent={this.props.editCalendarEvent}/>                
                             ))
                         }
                         </tbody>

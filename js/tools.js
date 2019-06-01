@@ -43,7 +43,7 @@ const SingaporeNewYear = (Y)=>{
 
 const SingaporePublicHolidays={
     Data:{
-        'HariRayaPuasa':{
+        'Hari Raya Puasa':{
             '1999':'1-19',
             '2000':'1-8',
             '2001':'12-16',
@@ -73,7 +73,7 @@ const SingaporePublicHolidays={
             '2020':'5-24',
             '2020':'5-25'
         },
-        'HariRayaHaji':{        
+        'Hari Raya Haji':{        
             '1999':'3-28',
             '1999':'3-29',
             '2000':'3-16',
@@ -102,7 +102,7 @@ const SingaporePublicHolidays={
             '2019':'8-12',
             '2020':'7-31'
         },
-        'VesakDay':{
+        'Vesak Day':{
             '1999':'5-29',
             '2000':'5-18',
             '2001':'5-7',
@@ -167,22 +167,22 @@ const SingaporePublicHolidays={
         }
         else{
             switch(festivalName){
-                case "NewYearDay":
+                case "New Year's Day":
                     dates.push(new Date(year,0,1))
                     break
-                case "ChineseNewYear":
+                case "Chinese New Year":
                     dates= dates.concat(SingaporeCNY(year))
                     break
                 case "GoodFriday":
                     dates.push(GoodFriday(year))
                     break
-                case "LabourDay":
+                case "Labour Day":
                     dates.push(new Date(year,4,1))
                     break
-                case "NationalDay":
+                case "National Day":
                     dates.push(new Date(year,7,9))
                     break
-                case "ChristmasDay":
+                case "Christmas Day":
                     dates.push(new Date(year,11,25))
                     break
             }

@@ -7,14 +7,16 @@ class Calendar extends React.Component{
             weekNames : ["Su","M","Tu","W","Th","F","Sa"],
             publicHolidays : {    
             },
-            birthDays : {    
+            birthDays : {
+                '5-6':['Klevin','Json','NET']
             },
           
             anniversary : {
+                '5-31':['Writer and lecturer Hellen Keller dies','Basketball Hall of Famer George Mikan dies']
             },
           
             busyDays : [
-              
+              '2019-2-3','2019-4-5'
             ]
           
         }
@@ -26,10 +28,13 @@ class Calendar extends React.Component{
         }
         this.changeYear = this.changeYear.bind(this)
         this.initialData = this.initialData.bind(this)
+        this.eventEditorCallBack=this.eventEditorCallBack.bind(this)
+        this.eventUpdated=false;
+
     }
 
     shouldComponentUpdate(nextProps, nextState){
-        return this.state.year!=nextState.year
+        return this.state.year!=nextState.year || this.eventUpdated
     }
 
     listToMatrix(list, elementsPerSubArray) {
@@ -53,7 +58,7 @@ class Calendar extends React.Component{
             const lastDay = new Date(year, monthNames.indexOf(m) + 1, 0);
             var days=[]
             const weekDayOfFirstDay = firstDay.getDay()
-            const weekDayOfLastDay = lastDay.getDay()
+            const today=new Date()
             for(var i=0;i<weekDayOfFirstDay;i++){
                 days.push(null)
             }
@@ -62,14 +67,18 @@ class Calendar extends React.Component{
                 var date=new Date(year,monthNames.indexOf(m),i)
                 var montDayString= (date.getMonth()+1)+'-'+date.getDate()
                 var fulldateString = date.getFullYear()+'-'+ montDayString
-
-                days.push({
+                var day={
                     date:new Date(year,monthNames.indexOf(m),i),
                     publichHoliday:this.data.publicHolidays[montDayString],
                     birthDays:this.data.birthDays[montDayString],
-                    busy:this.data.busyDays.indexOf(fulldateString)>=0,
+                    busy:localStorage.getItem("busydays")!=null? (JSON.parse(localStorage.getItem("busydays"))).indexOf(fulldateString)>=0:false,
                     anniversary:this.data.anniversary[montDayString]
-                })
+                }
+                days.push(day)
+
+                if(day.date.getFullYear() == today.getFullYear() && day.date.getMonth()==today.getMonth() && day.date.getDate() ==today.getDate()){
+                    window.SelectedDate=day
+                }
             }
 
             var offDays = 42-days.length
@@ -92,8 +101,8 @@ class Calendar extends React.Component{
     initialData(year){
         //public holidays
         this.data.publicHolidays={};
-        ['HariRayaPuasa','HariRayaHaji','VesakDay','Deepavali','NewYearDay',
-            'ChineseNewYear','GoodFriday','LabourDay','NationalDay','ChristmasDay'].forEach(f => {
+        ['Hari Raya Puasa','Hari Raya Haji','Vesak Day','Deepavali','New Year\'s Day',
+            'Chinese New Year','Good Friday','Labour Day','National Day','Christmas Day'].forEach(f => {
                 const publicHoliday = SingaporePublicHolidays.getDate(f,year)
                 
                 if(publicHoliday.length>0){
@@ -122,6 +131,16 @@ class Calendar extends React.Component{
         this.setState({year:year})
     }
 
+    editCalendarEvent=()=>{
+        this.refs.eventEditor.handleEditEvent();
+        $(".modal").modal()
+    }
+
+    eventEditorCallBack=(updated)=>{
+        this.eventUpdated=updated
+        this.setState({year:this.state.year})
+    }
+
     
     render(){
         
@@ -137,6 +156,7 @@ class Calendar extends React.Component{
                     }}><i className={"fa fa-caret-"+(direction=="back"?"left":"right")}></i></button>
             )
         }
+
 
         return (
             <div>                
@@ -175,12 +195,12 @@ class Calendar extends React.Component{
                 <div className="row">
                     {
                         this.data.monthNames.map(m => (
-                            <Month monthName={m} monthData={months[this.data.monthNames.indexOf(m)]} weekNames={this.data.weekNames} key={m}/>
+                            <Month monthName={m} monthData={months[this.data.monthNames.indexOf(m)]} weekNames={this.data.weekNames} key={m} editCalendarEvent={this.editCalendarEvent}/>
                         ))
                     }
                 </div>
 
-                
+                <EventEditor ref="eventEditor" callBack={this.eventEditorCallBack}/>
             </div>
 
           )
