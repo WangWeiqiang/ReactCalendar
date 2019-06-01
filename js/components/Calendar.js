@@ -1,10 +1,31 @@
 class Calendar extends React.Component{
     constructor(props){
         super(props)
+        this.data={
+            year:new Date().getFullYear(),
+            monthNames : ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"],
+            weekNames : ["Su","M","Tu","W","Th","F","Sa"],
+            publicHolidays : {    
+            },
+            birthDays : {    
+            },
+          
+            anniversary : {
+            },
+          
+            busyDays : [
+              
+            ]
+          
+        }
+
+        this.initialData(this.data.year)
+          
         this.state={
-            year:props.data.year
+            year:this.data.year
         }
         this.changeYear = this.changeYear.bind(this)
+        this.initialData = this.initialData.bind(this)
     }
 
     shouldComponentUpdate(nextProps, nextState){
@@ -26,8 +47,7 @@ class Calendar extends React.Component{
         return matrix;
     }
 
-    createMonths(year,monthNames){
-        console.log(year)
+    createMonths(year,monthNames){        
         return monthNames.map(m => {
             const firstDay = new Date(year, monthNames.indexOf(m), 1);
             const lastDay = new Date(year, monthNames.indexOf(m) + 1, 0);
@@ -45,10 +65,10 @@ class Calendar extends React.Component{
 
                 days.push({
                     date:new Date(year,monthNames.indexOf(m),i),
-                    publichHoliday:this.props.data.publicHolidays[montDayString],
-                    birthDays:this.props.data.birthDays[montDayString],
-                    busy:this.props.data.busyDays.indexOf(fulldateString)>=0,
-                    anniversary:this.props.data.anniversary[montDayString]
+                    publichHoliday:this.data.publicHolidays[montDayString],
+                    birthDays:this.data.birthDays[montDayString],
+                    busy:this.data.busyDays.indexOf(fulldateString)>=0,
+                    anniversary:this.data.anniversary[montDayString]
                 })
             }
 
@@ -69,16 +89,43 @@ class Calendar extends React.Component{
 
     }
 
+    initialData(year){
+        //public holidays
+        this.data.publicHolidays={};
+        ['HariRayaPuasa','HariRayaHaji','VesakDay','Deepavali','NewYearDay',
+            'ChineseNewYear','GoodFriday','LabourDay','NationalDay','ChristmasDay'].forEach(f => {
+                const publicHoliday = SingaporePublicHolidays.getDate(f,year)
+                
+                if(publicHoliday.length>0){
+                    publicHoliday.forEach(d=>{
+                        this.data.publicHolidays[(d.getMonth()+1)+'-'+d.getDate()]=f
+                    })
+                }
+                
+        });
+
+        //birthdays
+
+
+        //buys status
+
+
+        //anniverities
+
+    }
+
     changeYear(direction){
-        var year = this.state.year+(direction=="left"?-1:1)
-        this.props.data.year=year
+        var year = this.state.year+(direction=="back"?-1:1)
+        this.data.year=year
+        this.initialData(year)
+
         this.setState({year:year})
     }
 
     
     render(){
         
-        const months =  this.createMonths(this.props.data.year,this.props.data.monthNames)
+        const months =  this.createMonths(this.data.year,this.data.monthNames)
 
         const ButtonChangeYear=({direction,onClick})=>{
             return (
@@ -87,7 +134,7 @@ class Calendar extends React.Component{
                         if (!!onClick) {
                             onClick(direction);
                         }
-                    }}><i className={"fa fa-caret-"+(direction=="left"?"left":"right")}></i></button>
+                    }}><i className={"fa fa-caret-"+(direction=="back"?"left":"right")}></i></button>
             )
         }
 
@@ -95,14 +142,14 @@ class Calendar extends React.Component{
             <div>                
                 <div className="row">
                     <div className="col-3 text-right">
-                        <ButtonChangeYear direction="left" onClick={this.changeYear}></ButtonChangeYear>
+                        <ButtonChangeYear direction="back" onClick={this.changeYear}></ButtonChangeYear>
                     </div>
                     <div className="col-6 text-center">
                         <div className="row">
                         {
-                            [this.props.data.year-1,this.props.data.year,this.props.data.year+1].map((year)=>(
+                            [this.data.year-1,this.data.year,this.data.year+1].map((year)=>(
                                 <div className="text-center col-4" key={year}>
-                                    <span className={"p-1"+(year==this.props.data.year?" bg-warning font-weight-bold":"")}>{year}</span>
+                                    <span className={"p-1"+(year==this.data.year?" bg-warning font-weight-bold":"")}>{year}</span>
                                 </div>
                             ))
                             
@@ -110,12 +157,12 @@ class Calendar extends React.Component{
                         </div>
                     </div>
                     <div className="col-3 text-left">
-                        <ButtonChangeYear direction="right" onClick={this.changeYear}></ButtonChangeYear>
+                        <ButtonChangeYear direction="forward" onClick={this.changeYear}></ButtonChangeYear>
                     </div>
                 </div>
                 <hr/>
                 <div className="row mt-3">
-                    <div className="col-sm-5"><h4>Calendar for Year {this.props.data.year}</h4></div>
+                    <div className="col-sm-5"><h4>Calendar for Year {this.data.year}</h4></div>
                     <div className='col-sm-7 text-right'>
                         <ul className="legend">
                             <li><i className='fa fa-umbrella-beach text-success'></i> Public Holiday</li>
@@ -127,8 +174,8 @@ class Calendar extends React.Component{
                 </div>
                 <div className="row">
                     {
-                        this.props.data.monthNames.map(m => (
-                            <Month monthName={m} monthData={months[this.props.data.monthNames.indexOf(m)]} weekNames={this.props.data.weekNames} key={m}/>
+                        this.data.monthNames.map(m => (
+                            <Month monthName={m} monthData={months[this.data.monthNames.indexOf(m)]} weekNames={this.data.weekNames} key={m}/>
                         ))
                     }
                 </div>

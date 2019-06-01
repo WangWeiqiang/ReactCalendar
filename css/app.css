@@ -24,7 +24,7 @@ td.week-end{
 }
 .today{
     background-color:#ff3737;
-    color:#fff;
+    color:#fff !important;
 }
 
 td.count-4,td.count-3,td.count-2{
