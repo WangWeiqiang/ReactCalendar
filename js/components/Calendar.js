@@ -7,17 +7,11 @@ class Calendar extends React.Component{
             weekNames : ["Su","M","Tu","W","Th","F","Sa"],
             publicHolidays : {    
             },
-            birthDays : {
-                '5-6':['Klevin','Json','NET']
-            },
+            birthDays : JSON.parse(localStorage.getItem("birthdays")) || {},
           
-            anniversary : {
-                '5-31':['Writer and lecturer Hellen Keller dies','Basketball Hall of Famer George Mikan dies']
-            },
+            anniversary :  JSON.parse(localStorage.getItem("anniversary")) || {},
           
-            busyDays : [
-              '2019-2-3','2019-4-5'
-            ]
+            busyDays :JSON.parse(localStorage.getItem("busydays")) || []
           
         }
 
@@ -29,6 +23,7 @@ class Calendar extends React.Component{
         this.changeYear = this.changeYear.bind(this)
         this.initialData = this.initialData.bind(this)
         this.eventEditorCallBack=this.eventEditorCallBack.bind(this)
+        this.lunchBirthdayEditor=this.lunchBirthdayEditor.bind(this)
         this.eventUpdated=false;
 
     }
@@ -37,19 +32,15 @@ class Calendar extends React.Component{
         return this.state.year!=nextState.year || this.eventUpdated
     }
 
-    listToMatrix(list, elementsPerSubArray) {
-        var matrix = [], i, k;
-      
-        for (i = 0, k = -1; i < list.length; i++) {
-            if (i % elementsPerSubArray === 0) {
-                k++;
-                matrix[k] = [];
+    getAnniversary(monthDay){
+        var anniverities=[]
+        Object.keys(this.data.anniversary).map(key=>{
+            const [Y,M,D]=key.split('-')
+            if(M+'-'+D ==monthDay){
+                anniverities.push({year:Y,name:this.data.anniversary[key]})
             }
-      
-            matrix[k].push(list[i]);
-        }
-      
-        return matrix;
+        })
+        return anniverities.length>0?anniverities:null
     }
 
     createMonths(year,monthNames){        
@@ -71,8 +62,8 @@ class Calendar extends React.Component{
                     date:new Date(year,monthNames.indexOf(m),i),
                     publichHoliday:this.data.publicHolidays[montDayString],
                     birthDays:this.data.birthDays[montDayString],
-                    busy:localStorage.getItem("busydays")!=null? (JSON.parse(localStorage.getItem("busydays"))).indexOf(fulldateString)>=0:false,
-                    anniversary:this.data.anniversary[montDayString]
+                    busy:this.data.busyDays.indexOf(fulldateString)>=0,
+                    anniversary:this.getAnniversary(montDayString)
                 }
                 days.push(day)
 
@@ -88,7 +79,7 @@ class Calendar extends React.Component{
 
             
 
-            var weekGroupDays=this.listToMatrix(days,7)
+            var weekGroupDays=listToMatrix(days,7)
         
             return {
                 month:m,
@@ -133,12 +124,32 @@ class Calendar extends React.Component{
 
     editCalendarEvent=()=>{
         this.refs.eventEditor.handleEditEvent();
-        $(".modal").modal()
+        $("#event-editor").modal({
+            backdrop: 'static',
+            keyboard: false
+        })
     }
 
     eventEditorCallBack=(updated)=>{
+        this.data.birthDays=JSON.parse(localStorage.getItem("birthdays")) || {}
+        this.data.busyDays=JSON.parse(localStorage.getItem("busydays")) || []
+        this.data.anniversary =JSON.parse(localStorage.getItem("anniversary")) || {}
         this.eventUpdated=updated
         this.setState({year:this.state.year})
+    }
+
+    lunchBirthdayEditor(){
+        $('#birthday-editor').modal({
+            backdrop: 'static',
+            keyboard: false
+        })
+    }
+
+    lunchAnniversaryEditor(){        
+        $('#anniversary-editor').modal({
+            backdrop: 'static',
+            keyboard: false
+        })
     }
 
     
@@ -186,8 +197,8 @@ class Calendar extends React.Component{
                     <div className='col-sm-7 text-right'>
                         <ul className="legend">
                             <li><i className='fa fa-umbrella-beach text-success'></i> Public Holiday</li>
-                            <li><i className='fa fa-birthday-cake text-danger'></i> Birthday</li>
-                            <li><i className='fa fa-flag text-info'></i> Anniversary</li>
+                            <li><i className='fa fa-birthday-cake text-danger'></i> <a href="#" onClick={this.lunchBirthdayEditor}>Birthday</a></li>
+                            <li><i className='fa fa-flag text-info'></i> <a href="#" onClick={this.lunchAnniversaryEditor}>Anniversary</a></li>
                             <li><i className='fa fa-running text-danger'></i> Busy</li>
                         </ul>
                     </div>
@@ -201,6 +212,8 @@ class Calendar extends React.Component{
                 </div>
 
                 <EventEditor ref="eventEditor" callBack={this.eventEditorCallBack}/>
+                <BirthdayEditor ref="birthdayEditor" callBack={this.eventEditorCallBack}/>
+                <AnniversaryEditor ref="anniversaryEditor" callBack={this.eventEditorCallBack}/>
             </div>
 
           )

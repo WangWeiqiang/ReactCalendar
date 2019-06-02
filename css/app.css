@@ -26,6 +26,9 @@ td.week-end{
     background-color:#ff3737;
     color:#fff !important;
 }
+.today i{
+    color:#fff !important;
+}
 
 td.count-4,td.count-3,td.count-2{
     position: relative;
@@ -50,6 +53,20 @@ td.count-4 i:last-child{
     bottom:0;
     right:0;
 }
+
+td.count-3 i:first-child{
+    top:0;
+    left:0;
+}
+td.count-3 i:nth-child(2){
+    top:0;
+    right:0;
+}
+td.count-3 i:nth-child(3){
+    bottom:0;
+    left:0;
+}
+
 ul.legend{
     list-style: none;
 }

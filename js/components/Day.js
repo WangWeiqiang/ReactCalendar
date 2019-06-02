@@ -31,7 +31,11 @@ class Day extends React.Component{
         }
         if(day!=null && day.anniversary!=null){
             icons.push("flag text-info")
-            tooltips.push({type:"anniversary",title:day.anniversary.join(','),icon:'flag text-info'})
+            var anniversaries=[]
+            Object.keys(day.anniversary).map(key=>{
+                anniversaries=anniversaries.concat(day.anniversary[key].name)
+            })
+            tooltips.push({type:"anniversary",title:anniversaries.join(','),icon:'flag text-info'})
         }
         if(day!=null && day.busy){
             icons.push('running text-danger')
@@ -45,6 +49,7 @@ class Day extends React.Component{
     lunchEventEditor(){
         if(this.props.day!=null){
             window.SelectedDate=this.props.day
+            
             this.props.editCalendarEvent.call()
         }
     }
@@ -61,7 +66,7 @@ class Day extends React.Component{
                         }
                         <div className="popover_content">
                         {
-                            tooltips.map((t)=>(<div className='tooltip_text' key={t.type}><span><i className={'fa fa-'+t.icon}></i> {t.title}</span></div>))
+                            tooltips.map((t)=>(<div className='tooltip_text' key={t.type}><span><span className={'fa fa-'+t.icon}></span> {t.title}</span></div>))
                         }
                         </div>
                     </div>

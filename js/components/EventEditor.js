@@ -33,12 +33,14 @@ class EventEditor extends React.Component{
         else{
             
             var existBusyDays = JSON.parse(storagedBusyDays)
-            if(existBusyDays.indexOf(currentDayIndexKey)<0 && window.SelectedDate.busy)
+            if(existBusyDays.indexOf(currentDayIndexKey)<0 && window.SelectedDate.busy){
+                
                 existBusyDays.push(currentDayIndexKey)
+            }
             else{
                 if(existBusyDays.indexOf(currentDayIndexKey)>=0 && !window.SelectedDate.busy)
-                {
-                    existBusyDays.pop(existBusyDays.indexOf(currentDayIndexKey))
+                {                    
+                    existBusyDays.splice(existBusyDays.indexOf(currentDayIndexKey),1)
                 }
             }
 
@@ -56,33 +58,27 @@ class EventEditor extends React.Component{
 
     render(){
         return(
-        <div className="modal" tabIndex="-1" role="dialog">
+        <div className="modal" tabIndex="-1" role="dialog" id="event-editor">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                 <div className="modal-header">
-                    <h5 className="modal-title">{this.state.day!=null?this.state.day.date.toLocaleDateString():""}</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <h5 className="modal-title">{this.state.day!=null?(this.state.day.date.getDate() + " "+MonthNames()[this.state.day.date.getMonth()] +" "+ this.state.day.date.getFullYear()):""}</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close"  onClick={this.handleCloseWindow}>
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div className="modal-body">
+                    <h1 className="text-center text-warning mb-3"><i className="fa fa-smile"></i> Have A Nice Day!</h1>
                     {
-                        this.state.day!=null && this.state.day.publichHoliday!=null ? (<div className="row"><div className="col-sm-12">Today is {this.state.day.publichHoliday}</div></div>):""
+                        this.state.day!=null && this.state.day.publichHoliday!=null ? (<div className="row"><div className="col-sm-12 text-center text-info">Today is {this.state.day.publichHoliday}</div></div>):""
                     }
 
-                    
+                                        
                         {
                             this.state.day!=null && this.state.day.birthDays!=undefined?
                             (
                                 <div className="row mt-2">
-                                    <div className="col-sm-5">Say happy birthday to</div>
-                                    <div className="col-sm-7">
-                                        <ul>
-                                        {
-                                            this.state.day.birthDays.map((b)=>(<li key={b}>{b}</li>))                                    
-                                        }
-                                        </ul>
-                                    </div>
+                                    <div className="col-sm-12 text-center text-success">Say happy birthday to your friend{this.state.day.birthDays.length>1?'s':''} {this.state.day.birthDays.join(',')}</div>
                                 </div>
                             )
                             :
@@ -94,13 +90,14 @@ class EventEditor extends React.Component{
                             this.state.day!=null && this.state.day.anniversary!=undefined?
                             (
                                 <div className="row mt-2">
-                                    <div className="col-sm-5">Anniversary Day</div>
-                                    <div className="col-sm-7">
-                                        <ul>
+                                    <div className="col-sm-12">
+                                        
                                         {
-                                            this.state.day.anniversary.map((b)=>(<li key={b}>{b}</li>))                                    
+                                            this.state.day.anniversary.map((a)=>(
+                                                <div className="mb-2 text-center" key={a.name}><i className="fa fa-flag text-success"></i> {a.name} - {this.state.day.date.getFullYear() - a.year} Year(s)</div>
+                                            ))
                                         }
-                                        </ul>
+                                        
                                     </div>
                                 </div>
                             )
@@ -116,7 +113,7 @@ class EventEditor extends React.Component{
                             <div className="form-check">
                                 <input id="ckb-busy" name="busy-status" className="form-check-input" onChange={(e) => this.handleBusyChange(e)} type="checkbox" checked={this.state.busy} />
                                 <label className="form-check-label" htmlFor="ckb-busy">
-                                    Busy
+                                    <i className="fa fa-running text-danger"></i> Busy
                                 </label>
                             </div>
                         </div>
