@@ -25,7 +25,7 @@ class Calendar extends React.Component{
         this.changeYear = this.changeYear.bind(this)
         
         this.eventEditorCallBack = this.eventEditorCallBack.bind(this)
-        this.lunchBirthdayEditor = this.lunchBirthdayEditor.bind(this)
+        this.launchBirthdayEditor = this.launchBirthdayEditor.bind(this)
         this.eventUpdated = false;
 
     }
@@ -113,14 +113,14 @@ class Calendar extends React.Component{
         this.setState({year:this.state.year})
     }
 
-    lunchBirthdayEditor(){
+    launchBirthdayEditor(){
         $('#birthday-editor').modal({
             backdrop: 'static',
             keyboard: false
         })
     }
 
-    lunchAnniversaryEditor(){        
+    launchAnniversaryEditor(){        
         $('#anniversary-editor').modal({
             backdrop: 'static',
             keyboard: false
@@ -172,8 +172,8 @@ class Calendar extends React.Component{
                     <div className='col-sm-7 text-right'>
                         <ul className="legend">
                             <li><i className='fa fa-umbrella-beach text-success'></i> Public Holiday</li>
-                            <li><i className='fa fa-birthday-cake text-danger'></i> <a href="#" onClick = {this.lunchBirthdayEditor}>Birthday</a></li>
-                            <li><i className='fa fa-flag text-info'></i> <a href="#" onClick = {this.lunchAnniversaryEditor}>Anniversary</a></li>
+                            <li><i className='fa fa-birthday-cake text-danger'></i> <a href="#" onClick = {this.launchBirthdayEditor}>Birthday</a></li>
+                            <li><i className='fa fa-flag text-info'></i> <a href="#" onClick = {this.launchAnniversaryEditor}>Anniversary</a></li>
                             <li><i className='fa fa-running text-danger'></i> Busy</li>
                         </ul>
                     </div>

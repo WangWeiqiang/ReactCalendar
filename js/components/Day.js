@@ -2,7 +2,7 @@ class Day extends React.Component{
 
     constructor(props){
         super(props)
-        this.lunchEventEditor=this.lunchEventEditor.bind(this)
+        this.launchEventEditor=this.launchEventEditor.bind(this)
     }
 
     shouldComponentUpdate(nextProps, nextState){
@@ -45,7 +45,7 @@ class Day extends React.Component{
 
     }
 
-    lunchEventEditor(){
+    launchEventEditor(){
         if(this.props.day != null){
             window.SelectedDate=this.props.day
             
@@ -56,7 +56,7 @@ class Day extends React.Component{
     render(){
         const [className, icons, tooltips]=this.getClassNameAndIcon(this.props.day, this.props.weekDayIndex)
         return (
-        <td className={className + ' ' + (icons.length>0?'popover_wrapper count-'+icons.length:'')} onClick={this.lunchEventEditor}>
+        <td className={className + ' ' + (icons.length>0?'popover_wrapper count-'+icons.length:'')} onClick={this.launchEventEditor}>
             {
                 icons.length>0?(
                     <div>
