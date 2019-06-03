@@ -2,123 +2,98 @@ class Calendar extends React.Component{
     constructor(props){
         super(props)
         this.data={
-            year:new Date().getFullYear(),
-            monthNames : ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"],
+            year : new Date().getFullYear(),
+            
+            monthNames : MonthNames(),
+            
             weekNames : ["Su","M","Tu","W","Th","F","Sa"],
-            publicHolidays : {    
-            },
+            
+            publicHolidays : PublicHolidays(new Date().getFullYear()),
+
             birthDays : JSON.parse(localStorage.getItem("birthdays")) || {},
           
             anniversary :  JSON.parse(localStorage.getItem("anniversary")) || {},
           
-            busyDays :JSON.parse(localStorage.getItem("busydays")) || []
+            busyDays : JSON.parse(localStorage.getItem("busydays")) || []
           
         }
 
-        this.initialData(this.data.year)
-          
         this.state={
-            year:this.data.year
+            year : this.data.year
         }
+        
         this.changeYear = this.changeYear.bind(this)
-        this.initialData = this.initialData.bind(this)
-        this.eventEditorCallBack=this.eventEditorCallBack.bind(this)
-        this.lunchBirthdayEditor=this.lunchBirthdayEditor.bind(this)
-        this.eventUpdated=false;
+        
+        this.eventEditorCallBack = this.eventEditorCallBack.bind(this)
+        this.lunchBirthdayEditor = this.lunchBirthdayEditor.bind(this)
+        this.eventUpdated = false;
 
     }
 
     shouldComponentUpdate(nextProps, nextState){
-        return this.state.year!=nextState.year || this.eventUpdated
+        return this.state.year != nextState.year || this.eventUpdated
     }
 
     getAnniversary(monthDay){
-        var anniverities=[]
+        var anniverities = []
         Object.keys(this.data.anniversary).map(key=>{
-            const [Y,M,D]=key.split('-')
-            if(M+'-'+D ==monthDay){
-                anniverities.push({year:Y,name:this.data.anniversary[key]})
+            const [Y,M,D] = key.split('-')
+            if(M +'-' + D == monthDay){
+                anniverities.push({year : Y,name : this.data.anniversary[key]})
             }
         })
-        return anniverities.length>0?anniverities:null
+
+        return anniverities.length > 0 ? anniverities : null
     }
 
-    createMonths(year,monthNames){        
+    createMonths(year, monthNames){        
         return monthNames.map(m => {
             const firstDay = new Date(year, monthNames.indexOf(m), 1);
             const lastDay = new Date(year, monthNames.indexOf(m) + 1, 0);
-            var days=[]
+            var days = []
             const weekDayOfFirstDay = firstDay.getDay()
-            const today=new Date()
-            for(var i=0;i<weekDayOfFirstDay;i++){
+            const today = new Date()
+            for(var i = 0; i < weekDayOfFirstDay; i++){
                 days.push(null)
             }
 
-            for(var i=1;i<=lastDay.getDate();i++){
-                var date=new Date(year,monthNames.indexOf(m),i)
-                var montDayString= (date.getMonth()+1)+'-'+date.getDate()
-                var fulldateString = date.getFullYear()+'-'+ montDayString
-                var day={
-                    date:new Date(year,monthNames.indexOf(m),i),
-                    publichHoliday:this.data.publicHolidays[montDayString],
-                    birthDays:this.data.birthDays[montDayString],
-                    busy:this.data.busyDays.indexOf(fulldateString)>=0,
-                    anniversary:this.getAnniversary(montDayString)
+            for(var i = 1; i <= lastDay.getDate(); i++){
+                var date = new Date(year,monthNames.indexOf(m), i)
+                var montDayString = (date.getMonth()+1) + '-' + date.getDate()
+                var fulldateString = date.getFullYear() + '-' + montDayString
+                var day = {
+                    date : new Date(year,monthNames.indexOf(m), i),
+                    publichHoliday : this.data.publicHolidays[montDayString],
+                    birthDays : this.data.birthDays[montDayString],
+                    busy : this.data.busyDays.indexOf(fulldateString) >= 0,
+                    anniversary : this.getAnniversary(montDayString)
                 }
                 days.push(day)
 
-                if(day.date.getFullYear() == today.getFullYear() && day.date.getMonth()==today.getMonth() && day.date.getDate() ==today.getDate()){
-                    window.SelectedDate=day
+                if(day.date.getFullYear() == today.getFullYear() && day.date.getMonth() == today.getMonth() && day.date.getDate() == today.getDate()){
+                    window.SelectedDate = day
                 }
             }
 
             var offDays = 42-days.length
-            for(var j=0;j<offDays;j++){                
+            for(var j = 0; j < offDays; j++){                
                 days.push(null)
             }
 
-            
-
-            var weekGroupDays=listToMatrix(days,7)
+            var weekGroupDays = listToMatrix(days , 7)
         
             return {
-                month:m,
-                weeks:weekGroupDays
+                weeks : weekGroupDays
             }
         })       
 
     }
 
-    initialData(year){
-        //public holidays
-        this.data.publicHolidays={};
-        ['Hari Raya Puasa','Hari Raya Haji','Vesak Day','Deepavali','New Year\'s Day',
-            'Chinese New Year','Good Friday','Labour Day','National Day','Christmas Day'].forEach(f => {
-                const publicHoliday = SingaporePublicHolidays.getDate(f,year)
-                
-                if(publicHoliday.length>0){
-                    publicHoliday.forEach(d=>{
-                        this.data.publicHolidays[(d.getMonth()+1)+'-'+d.getDate()]=f
-                    })
-                }
-                
-        });
-
-        //birthdays
-
-
-        //buys status
-
-
-        //anniverities
-
-    }
 
     changeYear(direction){
         var year = this.state.year+(direction=="back"?-1:1)
-        this.data.year=year
-        this.initialData(year)
-
+        this.data.year = year
+        this.data.publicHolidays =  PublicHolidays(year)
         this.setState({year:year})
     }
 
@@ -131,10 +106,10 @@ class Calendar extends React.Component{
     }
 
     eventEditorCallBack=(updated)=>{
-        this.data.birthDays=JSON.parse(localStorage.getItem("birthdays")) || {}
-        this.data.busyDays=JSON.parse(localStorage.getItem("busydays")) || []
-        this.data.anniversary =JSON.parse(localStorage.getItem("anniversary")) || {}
-        this.eventUpdated=updated
+        this.data.birthDays = JSON.parse(localStorage.getItem("birthdays")) || {}
+        this.data.busyDays = JSON.parse(localStorage.getItem("busydays")) || []
+        this.data.anniversary = JSON.parse(localStorage.getItem("anniversary")) || {}
+        this.eventUpdated = updated
         this.setState({year:this.state.year})
     }
 
@@ -155,16 +130,16 @@ class Calendar extends React.Component{
     
     render(){
         
-        const months =  this.createMonths(this.data.year,this.data.monthNames)
+        const months =  this.createMonths(this.data.year, this.data.monthNames)
 
-        const ButtonChangeYear=({direction,onClick})=>{
+        const ButtonChangeYear = ({direction, onClick})=>{
             return (
                 <button className="btn btn-sm btn-success" 
-                    onClick={event=>{
+                    onClick = { event => {
                         if (!!onClick) {
                             onClick(direction);
                         }
-                    }}><i className={"fa fa-caret-"+(direction=="back"?"left":"right")}></i></button>
+                    }}><i className={ "fa fa-caret-" + (direction=="back"?"left":"right") }></i></button>
             )
         }
 
@@ -180,7 +155,7 @@ class Calendar extends React.Component{
                         {
                             [this.data.year-1,this.data.year,this.data.year+1].map((year)=>(
                                 <div className="text-center col-4" key={year}>
-                                    <span className={"p-1"+(year==this.data.year?" bg-warning font-weight-bold":"")}>{year}</span>
+                                    <span className={"p-1" + (year==this.data.year? " bg-warning font-weight-bold" : "")}>{year}</span>
                                 </div>
                             ))
                             
@@ -197,8 +172,8 @@ class Calendar extends React.Component{
                     <div className='col-sm-7 text-right'>
                         <ul className="legend">
                             <li><i className='fa fa-umbrella-beach text-success'></i> Public Holiday</li>
-                            <li><i className='fa fa-birthday-cake text-danger'></i> <a href="#" onClick={this.lunchBirthdayEditor}>Birthday</a></li>
-                            <li><i className='fa fa-flag text-info'></i> <a href="#" onClick={this.lunchAnniversaryEditor}>Anniversary</a></li>
+                            <li><i className='fa fa-birthday-cake text-danger'></i> <a href="#" onClick = {this.lunchBirthdayEditor}>Birthday</a></li>
+                            <li><i className='fa fa-flag text-info'></i> <a href="#" onClick = {this.lunchAnniversaryEditor}>Anniversary</a></li>
                             <li><i className='fa fa-running text-danger'></i> Busy</li>
                         </ul>
                     </div>
@@ -206,7 +181,7 @@ class Calendar extends React.Component{
                 <div className="row">
                     {
                         this.data.monthNames.map(m => (
-                            <Month monthName={m} monthData={months[this.data.monthNames.indexOf(m)]} weekNames={this.data.weekNames} key={m} editCalendarEvent={this.editCalendarEvent}/>
+                            <Month monthName = {m} monthData={months[this.data.monthNames.indexOf(m)]} weekNames={this.data.weekNames} key={m} editCalendarEvent={this.editCalendarEvent}/>
                         ))
                     }
                 </div>

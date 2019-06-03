@@ -20,25 +20,25 @@ const GoodFriday =(Y)=> {
     
     D = parseInt(D, 10)
     
-    return new Date(Y,M-1,D)
+    return new Date(Y, M-1, D)
 }
 
 
 const SingaporeCNY=(Y)=>{
-    var lunar = calendar.lunar2solar(Y,1,1)
-    var solar = new Date(Y,lunar.cMonth-1,lunar.cDay)
+    var lunar = calendar.lunar2solar(Y, 1, 1)
+    var solar = new Date(Y, lunar.cMonth - 1, lunar.cDay)
     var weekDay = solar.getDay()
     var CNYHoliday = []
 
     CNYHoliday.push(new Date(Y,lunar.cMonth-1, lunar.cDay))
-    CNYHoliday.push(new Date(Y,lunar.cMonth-1, lunar.cDay+1))
+    CNYHoliday.push(new Date(Y,lunar.cMonth-1, lunar.cDay + 1))
     
     return CNYHoliday
 }
 
 const SingaporeNewYear = (Y)=>{
     var d=new Date(Y,0,1);
-    return (d.getDay()==7)? "1-2": "1-1"
+    return (d.getDay() == 7) ? "1-2" : "1-1"
 }
 
 const SingaporePublicHolidays={
@@ -157,18 +157,18 @@ const SingaporePublicHolidays={
     },
     getDate:function(festivalName,year){
         var data = this.Data[festivalName];
-        var dates=[];
-        if(data!=null){
+        var dates = [];
+        if(data != null){
             var monthDay = data[year.toString()]            
-            if(monthDay!=null){
-                var [month,day]=monthDay.split('-')
-                dates.push(new Date(year,parseInt(month)-1,parseInt(day)))                
+            if(monthDay != null){
+                var [month, day] = monthDay.split('-')
+                dates.push(new Date(year,parseInt(month) -1 , parseInt(day)))
             }
         }
         else{
             switch(festivalName){
                 case "New Year's Day":
-                    dates.push(new Date(year,0,1))
+                    dates.push(new Date(year, 0, 1))
                     break
                 case "Chinese New Year":
                     dates= dates.concat(SingaporeCNY(year))
@@ -177,28 +177,28 @@ const SingaporePublicHolidays={
                     dates.push(GoodFriday(year))
                     break
                 case "Labour Day":
-                    dates.push(new Date(year,4,1))
+                    dates.push(new Date(year, 4, 1))
                     break
                 case "National Day":
-                    dates.push(new Date(year,7,9))
+                    dates.push(new Date(year, 7, 9))
                     break
                 case "Christmas Day":
-                    dates.push(new Date(year,11,25))
+                    dates.push(new Date(year, 11, 25))
                     break
             }
         }
 
         //observed
-        if(dates.length==1){
-            if(dates[0].getDay()==0){
+        if(dates.length == 1){
+            if(dates[0].getDay() == 0){
                 dates[0].setDate(dates[0].getDate() + 1);
             }
         }
         else{
-            if(dates.length>1){
-                if(dates[0].getDay()==6){
+            if(dates.length > 1){
+                if(dates[0].getDay() == 6){
                     dates.forEach(d => {
-                        d.setDate(d.getDate()+1)
+                        d.setDate(d.getDate() + 1)
                     });
                 }
             }
@@ -228,3 +228,21 @@ const listToMatrix=(list, elementsPerSubArray)=> {
 const MonthNames=()=>{
     return  ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"]
 }
+
+const PublicHolidays=(year)=>{
+    var publicHolidays={};
+    ['Hari Raya Puasa','Hari Raya Haji','Vesak Day','Deepavali','New Year\'s Day',
+        'Chinese New Year','Good Friday','Labour Day','National Day','Christmas Day'].forEach(f => {
+            const publicHoliday = SingaporePublicHolidays.getDate(f,year)
+            
+            if(publicHoliday.length>0){
+                publicHoliday.forEach(d=>{
+                    publicHolidays[(d.getMonth()+1) + '-' + d.getDate()]=f
+                })
+            }
+            
+    })
+
+    return publicHolidays
+}
+

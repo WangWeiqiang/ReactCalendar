@@ -1,7 +1,6 @@
-class Week extends React.Component{
-    
-    render(){        
-        const today=new Date()
+class Week extends React.Component{    
+    render(){ 
+        
         return (
             <tr>
             {

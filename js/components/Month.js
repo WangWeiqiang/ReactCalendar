@@ -1,6 +1,6 @@
 class Month extends React.Component{    
-    render(){
-        
+    render()
+    {        
         return(            
             <div className='col-md-4 col-sm-6'>
                 <div className='week-box card'>

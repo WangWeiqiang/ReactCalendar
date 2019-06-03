@@ -2,43 +2,43 @@ class EventEditor extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            day:null,
-            busy:false
+            day : null,
+            busy : false
         }
-        this.handleBusyChange=this.handleBusyChange.bind(this)
-        this.handleEditEvent=this.handleEditEvent.bind(this)
-        this.handleCloseWindow=this.handleCloseWindow.bind(this)
+        this.handleBusyChange = this.handleBusyChange.bind(this)
+        this.handleEditEvent = this.handleEditEvent.bind(this)
+        this.handleCloseWindow = this.handleCloseWindow.bind(this)
     }
 
     shouldComponentUpdate(nextProps, nextState){        
-        return this.state.day!=nextState.day || this.state.busy!=nextState.busy        
+        return this.state.day != nextState.day || this.state.busy != nextState.busy        
     }
 
     handleEditEvent(){
         this.setState({
-            day:window.SelectedDate,
-            busy:window.SelectedDate.busy
+            day : window.SelectedDate,
+            busy : window.SelectedDate.busy
         })
     }
 
     handleBusyChange(e){
-        window.SelectedDate.busy=e.target.checked
+        window.SelectedDate.busy = e.target.checked
         var storagedBusyDays = localStorage.getItem("busydays")
         var currentDay=window.SelectedDate.date;
-        var currentDayIndexKey=currentDay.getFullYear()+"-"+(currentDay.getMonth()+1)+"-"+currentDay.getDate()
+        var currentDayIndexKey = currentDay.getFullYear()+ "-" +(currentDay.getMonth()+1)+ "-" +currentDay.getDate()
         var objectString;
-        if(storagedBusyDays==null && window.SelectedDate.busy){
+        if(storagedBusyDays == null && window.SelectedDate.busy){
             objectString = JSON.stringify([currentDayIndexKey])
         }
         else{
             
             var existBusyDays = JSON.parse(storagedBusyDays)
-            if(existBusyDays.indexOf(currentDayIndexKey)<0 && window.SelectedDate.busy){
+            if(existBusyDays.indexOf(currentDayIndexKey) < 0 && window.SelectedDate.busy){
                 
                 existBusyDays.push(currentDayIndexKey)
             }
             else{
-                if(existBusyDays.indexOf(currentDayIndexKey)>=0 && !window.SelectedDate.busy)
+                if(existBusyDays.indexOf(currentDayIndexKey) >= 0 && !window.SelectedDate.busy)
                 {                    
                     existBusyDays.splice(existBusyDays.indexOf(currentDayIndexKey),1)
                 }
@@ -48,7 +48,7 @@ class EventEditor extends React.Component{
         }
         localStorage.setItem("busydays",objectString)
 
-        this.setState({busy:e.target.checked})
+        this.setState({busy : e.target.checked})
     }
 
     handleCloseWindow(){
@@ -72,10 +72,9 @@ class EventEditor extends React.Component{
                     {
                         this.state.day!=null && this.state.day.publichHoliday!=null ? (<div className="row"><div className="col-sm-12 text-center text-info">Today is {this.state.day.publichHoliday}</div></div>):""
                     }
-
-                                        
-                        {
-                            this.state.day!=null && this.state.day.birthDays!=undefined?
+                    
+                    {
+                        this.state.day!=null && this.state.day.birthDays!=undefined?
                             (
                                 <div className="row mt-2">
                                     <div className="col-sm-12 text-center text-success">Say happy birthday to your friend{this.state.day.birthDays.length>1?'s':''} {this.state.day.birthDays.join(',')}</div>
@@ -84,10 +83,10 @@ class EventEditor extends React.Component{
                             :
                             ""
                             
-                        }
+                    }
 
-                        {
-                            this.state.day!=null && this.state.day.anniversary!=undefined?
+                    {
+                        this.state.day!=null && this.state.day.anniversary!=undefined?
                             (
                                 <div className="row mt-2">
                                     <div className="col-sm-12">
@@ -103,8 +102,7 @@ class EventEditor extends React.Component{
                             )
                             :
                             ""
-                        }
-                        
+                    }
                     
                 </div>
                 <div className="modal-footer">
